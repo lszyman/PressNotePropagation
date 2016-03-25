@@ -4,14 +4,14 @@
 import re
 from nltk import download
 from nltk.corpus import stopwords
-from stemming.porter2 import stem
-
+from nltk.stem.snowball import SnowballStemmer
 
 class WordCount:
 	def __init__(self, language):
 		download('stopwords')
 		self.stopwords = stopwords.words(language)
 		self.parse_regexp = re.compile(r"([0-9]*[a-zA-Z][a-zA-Z0-9]+)", re.DOTALL)
+		self.current_stemmer = SnowballStemmer(language)
 
 	def parse_text(self, text, wordcount_dictionary=None):
 		"""
@@ -26,7 +26,7 @@ class WordCount:
 			wordcount_dictionary = {}
 		words = self.parse_regexp.findall(text)
 		for word in words:
-			new_word = stem(word.lower())
+			new_word = self.current_stemmer.stem(word.lower())
 			if new_word not in self.stopwords:
 				if new_word in wordcount_dictionary:
 					wordcount_dictionary[new_word] += 1

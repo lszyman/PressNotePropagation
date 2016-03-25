@@ -9,15 +9,17 @@ from wordcount import WordCount
 
 
 class DictionaryMaker:
-	def __init__(self, language):
-		self.wordcount = WordCount(language)
+	def __init__(self, language_code):
+		self.language_codes = {'en': 'english', 'es': 'spanish', 'fr': 'french'}
+		self.language_code = language_code
+		self.wordcount = WordCount(self.language_codes[language_code])
 		self.wordcount_dictionary = {}
 
 	def parse(self, directory, max_parsed_pressnotes=None):  #max_parsed_pressnotes=None -> no limit
 		n = 0
 		for root, subFolders, files in os.walk(directory):
 			for file in files:
-				if file == 'rss.csv':
+				if root.split(os.sep)[-1].startswith(self.language_code) and file == 'rss.csv':
 					print os.path.join(root, file)
 					pressnote_list = PressNote.load(os.path.join(root, file))
 
