@@ -15,16 +15,18 @@ class DictionaryMaker:
 
 	def parse(self, directory, max_parsed_pressnotes=None):  #max_parsed_pressnotes=None -> no limit
 		n = 0
-		for fn in os.listdir(directory):
-			print directory + os.sep + fn
-			pressnote_list = PressNote.load(directory + os.sep + fn)
+		for root, subFolders, files in os.walk(directory):
+			for file in files:
+				if file == 'rss.csv':
+					print os.path.join(root, file)
+					pressnote_list = PressNote.load(os.path.join(root, file))
 
-			for pressnote in pressnote_list:
-				self.wordcount.parse_text(pressnote.title, self.wordcount_dictionary)
-				self.wordcount.parse_text(pressnote.text, self.wordcount_dictionary)
-				n += 1
-				if max_parsed_pressnotes is not None and n > max_parsed_pressnotes:
-					break
+					for pressnote in pressnote_list:
+						self.wordcount.parse_text(pressnote.title, self.wordcount_dictionary)
+						self.wordcount.parse_text(pressnote.text, self.wordcount_dictionary)
+						n += 1
+						if max_parsed_pressnotes is not None and n > max_parsed_pressnotes:
+							break
 		print "Parsed: " + str(n) + " press notes"
 
 	def dump(self, dictionary_name, dict_max_size=None):  #dict_max_size=None -> no limit
