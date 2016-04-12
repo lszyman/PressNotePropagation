@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
+import os
 import re
 from nltk import download
 from nltk.corpus import stopwords
@@ -8,10 +9,20 @@ from nltk.stem.snowball import SnowballStemmer
 
 class WordCount:
 	def __init__(self, language):
-		download('stopwords')
-		self.stopwords = stopwords.words(language)
+		self.stopwords = self.load_stopwords(language)
 		self.parse_regexp = re.compile(r"([0-9]*[a-zA-Z][a-zA-Z0-9]+)", re.DOTALL)
 		self.current_stemmer = SnowballStemmer(language)
+		
+	def load_stopwords(self, language):
+		stoplist = []
+		if language == 'english':
+			with open('geomedia'+ os.sep +'en_stoplist.txt') as f:
+				stoplist = [line.rstrip() for line in f]
+		else:
+			download('stopwords')
+			stoplist = stopwords.words(language)
+
+		return stoplist
 
 	def parse_text(self, text, wordcount_dictionary=None):
 		"""

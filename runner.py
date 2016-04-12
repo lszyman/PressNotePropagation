@@ -14,14 +14,18 @@ if __name__ == '__main__':
 	if len(sys.argv) != 1:
 		print "python runner.py"
 	else:
-		dictionary_maker = DictionaryMaker('en')
-		dictionary_maker.parse(INPUT_DIR)
+		'''dictionary_maker = DictionaryMaker('en')
+		dictionary_maker.parse_language(INPUT_DIR)
 		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'en_dictionary.txt')
 		
 		dictionary_maker = DictionaryMaker('es')
-		dictionary_maker.parse(INPUT_DIR)
+		dictionary_maker.parse_language(INPUT_DIR)
 		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'es_dictionary.txt')
 		
 		dictionary_maker = DictionaryMaker('fr')
+		dictionary_maker.parse_language(INPUT_DIR)
+		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'fr_dictionary.txt')'''
+		
+		dictionary_maker = DictionaryMaker('en')
 		dictionary_maker.parse(INPUT_DIR)
-		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'fr_dictionary.txt')
+		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'dictionary.txt')

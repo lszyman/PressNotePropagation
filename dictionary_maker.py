@@ -15,11 +15,30 @@ class DictionaryMaker:
 		self.wordcount = WordCount(self.language_codes[language_code])
 		self.wordcount_dictionary = {}
 
-	def parse(self, directory, max_parsed_pressnotes=None):  #max_parsed_pressnotes=None -> no limit
+	#parse only concrete language
+	def parse_language(self, directory, max_parsed_pressnotes=None):  #max_parsed_pressnotes=None -> no limit
 		n = 0
 		for root, subFolders, files in os.walk(directory):
 			for file in files:
 				if root.split(os.sep)[-1].startswith(self.language_code) and file == 'rss.csv':
+					print os.path.join(root, file)
+					pressnote_list = PressNote.load(os.path.join(root, file))
+
+					for pressnote in pressnote_list:
+						self.wordcount.parse_text(pressnote.title, self.wordcount_dictionary)
+						self.wordcount.parse_text(pressnote.text, self.wordcount_dictionary)
+						n += 1
+						if max_parsed_pressnotes is not None and n > max_parsed_pressnotes:
+							break
+		print "Parsed: " + str(n) + " press notes"
+
+	#parse all languages with english version
+	def parse(self, directory, max_parsed_pressnotes=None):  #max_parsed_pressnotes=None -> no limit
+		n = 0
+		for root, subFolders, files in os.walk(directory):
+			for file in files:
+				root_wanted = root.split(os.sep)[-1].startswith(self.language_code) #there is translation in rss2.csv
+				if (root_wanted and file == 'rss.csv') or (not root_wanted and file == 'rss2.csv'):
 					print os.path.join(root, file)
 					pressnote_list = PressNote.load(os.path.join(root, file))
 
