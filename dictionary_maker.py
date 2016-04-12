@@ -22,7 +22,7 @@ class DictionaryMaker:
 			for file in files:
 				if root.split(os.sep)[-1].startswith(self.language_code) and file == 'rss.csv':
 					print os.path.join(root, file)
-					pressnote_list = PressNote.load(os.path.join(root, file))
+					pressnote_list = PressNote.load_list(os.path.join(root, file))
 
 					for pressnote in pressnote_list:
 						self.wordcount.parse_text(pressnote.title, self.wordcount_dictionary)
@@ -40,7 +40,7 @@ class DictionaryMaker:
 				root_wanted = root.split(os.sep)[-1].startswith(self.language_code) #there is translation in rss2.csv
 				if (root_wanted and file == 'rss.csv') or (not root_wanted and file == 'rss2.csv'):
 					print os.path.join(root, file)
-					pressnote_list = PressNote.load(os.path.join(root, file))
+					pressnote_list = PressNote.load_list(os.path.join(root, file))
 
 					for pressnote in pressnote_list:
 						self.wordcount.parse_text(pressnote.title, self.wordcount_dictionary)

@@ -6,26 +6,18 @@ import sys
 from wordcount import WordCount
 from dictionary_maker import DictionaryMaker
 from pressnote import PressNote
+from bag_of_words import BagOfWords
 
 if __name__ == '__main__':
 	INPUT_DIR = 'geomedia'
 	OUTPUT_DIR = 'outputs'
+	DICTIONARY_PATH = OUTPUT_DIR + os.sep + 'dictionary.txt'
 	
 	if len(sys.argv) != 1:
 		print "python runner.py"
 	else:
-		'''dictionary_maker = DictionaryMaker('en')
-		dictionary_maker.parse_language(INPUT_DIR)
-		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'en_dictionary.txt')
-		
-		dictionary_maker = DictionaryMaker('es')
-		dictionary_maker.parse_language(INPUT_DIR)
-		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'es_dictionary.txt')
-		
-		dictionary_maker = DictionaryMaker('fr')
-		dictionary_maker.parse_language(INPUT_DIR)
-		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'fr_dictionary.txt')'''
-		
 		dictionary_maker = DictionaryMaker('en')
 		dictionary_maker.parse(INPUT_DIR)
-		dictionary_maker.dump(OUTPUT_DIR + os.sep + 'dictionary.txt')
+		dictionary_maker.dump(DICTIONARY_PATH)
+		
+		#bag_of_words = BagOfWords(DICTIONARY_PATH, INPUT_DIR, None) #change None -> dictionary size

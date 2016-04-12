@@ -12,8 +12,9 @@ class WordCount:
 		self.stopwords = self.load_stopwords(language)
 		self.parse_regexp = re.compile(r"([0-9]*[a-zA-Z][a-zA-Z0-9]+)", re.DOTALL)
 		self.current_stemmer = SnowballStemmer(language)
-		
-	def load_stopwords(self, language):
+
+	@staticmethod
+	def load_stopwords(language):
 		stoplist = []
 		if language == 'english':
 			with open('geomedia'+ os.sep +'en_stoplist.txt') as f:
@@ -38,7 +39,7 @@ class WordCount:
 		words = self.parse_regexp.findall(text)
 		for word in words:
 			new_word = self.current_stemmer.stem(word.lower())
-			if new_word not in self.stopwords:
+			if word not in self.stopwords and new_word not in self.stopwords:
 				if new_word in wordcount_dictionary:
 					wordcount_dictionary[new_word] += 1
 				else:

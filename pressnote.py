@@ -22,7 +22,7 @@ class PressNote:
 		return "-TITLE:" + self.title + "\n" + "-TEXT:" + self.text + "\n\n"
 	
 	@staticmethod
-	def load(filePath):
+	def load_list(filePath):
 		with open(filePath, "r") as csv_file:
 			listOfNotes = [PressNote(line.split('\t')) for line in csv_file]
 			return listOfNotes[1:]	#remove file header
