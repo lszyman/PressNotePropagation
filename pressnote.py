@@ -19,7 +19,7 @@ class PressNote:
 		self.text = pressNoteSplitted[4]
 	
 	def __repr__(self):
-		return "-TITLE:" + self.title + "\n" + "-TEXT:" + self.text + "\n\n"
+		return self.ID + "\t" + self.feed + "\t" + self.time + "\t" + self.title + "\t" + self.text
 	
 	@staticmethod
 	def load_list(filePath):
