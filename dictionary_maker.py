@@ -20,7 +20,7 @@ class DictionaryMaker:
 		n = 0
 		for root, subFolders, files in os.walk(directory):
 			for file in files:
-				if root.split(os.sep)[-1].startswith(self.language_code) and file == 'rss.csv':
+				if root.split(os.sep)[-1].startswith(self.language_code) and file == 'rss_unique.csv':
 					print os.path.join(root, file)
 					pressnote_list = PressNote.load_list(os.path.join(root, file))
 
@@ -38,7 +38,7 @@ class DictionaryMaker:
 		for root, subFolders, files in os.walk(directory):
 			for file in files:
 				root_wanted = root.split(os.sep)[-1].startswith(self.language_code) #there is translation in rss2.csv
-				if (root_wanted and file == 'rss.csv') or (not root_wanted and file == 'rss2.csv'):
+				if (root_wanted and file == 'rss_unique.csv') or (not root_wanted and file == 'rss_en.csv'):
 					print os.path.join(root, file)
 					pressnote_list = PressNote.load_list(os.path.join(root, file))
 
