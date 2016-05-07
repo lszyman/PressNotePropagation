@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-import csv
+import unicodecsv as csv
 
 class PressNote:
     def __init__(self, id, feed, time, title, text):

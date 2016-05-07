@@ -26,7 +26,7 @@ class TestTranslator(unittest.TestCase):
         target_file = first_dir[0] + "/rss_en.csv"
         notes_list = PressNote.load_list(input_file)
         notes_list = translate_notes_list(notes_list, lang_in = first_dir[1])
-        ParseNotes.serialize_list(notes_list, target_file)
+        PressNote.serialize_list(notes_list, target_file)
 
 
 if __name__ == '__main__':
