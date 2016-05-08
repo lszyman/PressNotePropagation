@@ -45,3 +45,23 @@ class WordCount:
 				else:
 					wordcount_dictionary[new_word] = 1
 		return wordcount_dictionary
+		
+	def parse_text_extra(self, text, wordcount_dictionary=None, extras=None):
+		if wordcount_dictionary is None:
+			wordcount_dictionary = {}
+		if wordcount_dictionary is None:
+			extras = {}
+		words = self.parse_regexp.findall(text)
+		for word in words:
+			new_word = self.current_stemmer.stem(word.lower())
+			if word not in self.stopwords and new_word not in self.stopwords:
+				if new_word in wordcount_dictionary:
+					wordcount_dictionary[new_word] += 1
+					if word in extras[new_word]:
+						extras[new_word][word] += 1
+					else:
+						extras[new_word][word] = 1
+				else:
+					wordcount_dictionary[new_word] = 1
+					extras[new_word] = {}
+					extras[new_word][word] = 1
