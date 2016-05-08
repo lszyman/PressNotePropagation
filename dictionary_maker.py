@@ -32,6 +32,20 @@ class DictionaryMaker:
 							break
 		print "Parsed: " + str(n) + " press notes"
 
+	#parse only concrete file
+	def parse_language2(self, file_path, max_parsed_pressnotes=None):  #max_parsed_pressnotes=None -> no limit
+		n = 0
+		print file_path
+		pressnote_list = PressNote.load_list(file_path)
+
+		for pressnote in pressnote_list:
+			self.wordcount.parse_text(pressnote.title, self.wordcount_dictionary)
+			self.wordcount.parse_text(pressnote.text, self.wordcount_dictionary)
+			n += 1
+			if max_parsed_pressnotes is not None and n > max_parsed_pressnotes:
+				break
+		print "Parsed: " + str(n) + " press notes"	
+		
 	#parse all languages with english version
 	def parse(self, directory, max_parsed_pressnotes=None):  #max_parsed_pressnotes=None -> no limit
 		n = 0

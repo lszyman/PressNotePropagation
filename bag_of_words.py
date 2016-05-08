@@ -3,6 +3,7 @@
 
 import os
 import sys
+import re
 import operator
 from pressnote import PressNote
 from wordcount import WordCount
@@ -49,7 +50,7 @@ class BagOfWords:
 		for root, subFolders, files in os.walk(dir_notes):
 			for file in files:
 				root_wanted = root.split(os.sep)[-1].startswith(self.language_code) #there is translation in rss2.csv
-				if (root_wanted and file == 'rss_unique.csv') or (not root_wanted and file == 'rss2.csv'):
+				if (root_wanted and file == 'rss_unique.csv') or (not root_wanted and file == 'rss_en.csv'):
 					print os.path.join(root, file)
 					pressnote_list.extend(PressNote.load_list(os.path.join(root, file)))
 		
@@ -73,11 +74,13 @@ class BagOfWords:
 			for file in files:
 				self.bag_of_words = {}
 				root_wanted = root.split(os.sep)[-1].startswith(self.language_code) #there is translation in rss2.csv
-				if (root_wanted and file == 'rss_unique.csv') or (not root_wanted and file == 'rss_en.csv'):
+				pattern1 = re.compile(r'^rss_unique(\d)*\.csv$')
+				pattern2 = re.compile(r'^rss_en(\d)*\.csv$')
+				if (root_wanted and pattern1.match(file)) or (not root_wanted and pattern2.match(file)):
 					pressnote_list = PressNote.load_list(os.path.join(root, file))
 
 					dictionary_maker = DictionaryMaker(self.language_code)
-					dictionary_maker.parse_language(root)
+					dictionary_maker.parse_language2(os.path.join(root, file))
 					dictionary_maker.dump(output_dir + os.sep + 'temp_dictionary.txt')
 					self.word_indexes = self.load_dictionary(output_dir + os.sep + 'temp_dictionary.txt', self.dict_max_size)
 					
@@ -93,7 +96,12 @@ class BagOfWords:
 						self.bag_of_words[pressnote] = word_vector
 
 					print "Created bag of words: " + str(len(self.bag_of_words)) + " x " + str(len(self.bag_of_words[pressnote_list[0]])) + "\n"
-					self.cluster(output_dir + os.sep + root.split(os.sep)[-2] + os.sep + 'cluster_'+root.split(os.sep)[-1] + '.txt');
+
+					match_file = re.match(r'(rss_unique|rss_en)(\d)*\.csv', file)
+					number = match_file.group(2)
+					if number is None:
+						number = ""
+					self.cluster(output_dir + os.sep + root.split(os.sep)[-2] + os.sep + 'cluster_'+root.split(os.sep)[-1] + number + '.txt')
 		
 	def cluster(self, clusters_file_path):
 		X = []
