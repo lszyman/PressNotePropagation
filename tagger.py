@@ -4,6 +4,7 @@
 import os
 import sys
 import operator
+import codecs
 from pressnote import PressNote
 from wordcount import WordCount
 
@@ -29,14 +30,14 @@ def findTags(file_path, pressnotes, cluster_number, language_code):
 	saveNotesToFile(file_path, pressnotes, cluster_number, tags)
 
 def saveNotesToFile(file_path, pressnotes, cluster_number, tags):
-	with open (file_path, 'a') as f:
-		f.write(str(int(cluster_number)) + ' ' + str(tags) + '\n')
+	with codecs.open(file_path, 'a', "utf-8") as f:
+		f.write(str(int(cluster_number)) + ' ' +  ":".join(tags) + u'\n')
 		for pressnote in pressnotes:
-			f.write(str(pressnote))
+			f.write(pressnote.to_string())
 		f.write('\n')
 
 if __name__ == '__main__':
-	LANGUAGE_CODE = 'en'
+	LANGUAGE_CODE = 'fr'
 	INPUT_DIR = 'outputs' + os.sep + 'Geomedia_extract_AGENDA' + os.sep + LANGUAGE_CODE
 	OUTPUT_DIR = 'outputs' + os.sep + 'Geomedia_extract_AGENDA' + os.sep + LANGUAGE_CODE + '_tagged'
 	
@@ -47,7 +48,7 @@ if __name__ == '__main__':
 			for file in files:
 				file_path = os.path.join(root, file)
 				print file_path
-				with open(file_path, "r") as f:
+				with codecs.open(file_path, "r", "utf-8") as f:
 					cluster_number = f.readline()
 					while cluster_number.strip() != '':
 						pressnotes = []

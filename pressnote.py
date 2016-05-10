@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-import csv
+import codecs
 
 class PressNote:
 	def __init__(self, id, feed, time, title, text):
@@ -19,10 +19,16 @@ class PressNote:
 		self.text = pressNoteSplitted[4]
 	
 	def __repr__(self):
-		return self.ID + "\t" + self.feed + "\t" + self.time + "\t" + self.title + "\t" + self.text
+		return self.to_string()
+		
+	def to_list(self):
+		return [self.ID, self.feed, self.time, self.title, self.text]
+	
+	def to_string(self):
+		return u'\t'.join(self.to_list())
 	
 	@staticmethod
 	def load_list(filePath):
-		with open(filePath, "r") as csv_file:
+		with codecs.open(filePath, "r", "utf-8") as csv_file:
 			listOfNotes = [PressNote(line.split('\t')) for line in csv_file]
 			return listOfNotes[1:]	#remove file header

@@ -74,8 +74,8 @@ class BagOfWords:
 			for file in files:
 				self.bag_of_words = {}
 				root_wanted = root.split(os.sep)[-1].startswith(self.language_code) #there is translation in rss2.csv
-				pattern1 = re.compile(r'^rss_unique(\d)*\.csv$')
-				pattern2 = re.compile(r'^rss_en(\d)*\.csv$')
+				pattern1 = re.compile(r'^rss_unique(\d*)\.csv$')
+				pattern2 = re.compile(r'^rss_en(\d*)\.csv$')
 				if (root_wanted and pattern1.match(file)) or (not root_wanted and pattern2.match(file)):
 					pressnote_list = PressNote.load_list(os.path.join(root, file))
 
@@ -97,7 +97,7 @@ class BagOfWords:
 
 					print "Created bag of words: " + str(len(self.bag_of_words)) + " x " + str(len(self.bag_of_words[pressnote_list[0]])) + "\n"
 
-					match_file = re.match(r'(rss_unique|rss_en)(\d)*\.csv', file)
+					match_file = re.match(r'(rss_unique|rss_en)(\d*)\.csv', file)
 					number = match_file.group(2)
 					if number is None:
 						number = ""
