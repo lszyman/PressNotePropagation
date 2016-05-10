@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 import unicodecsv as csv
+import codecs
 
 class PressNote:
     def __init__(self, id, feed, time, title, text):
@@ -19,16 +20,23 @@ class PressNote:
         self.text = pressNoteSplitted[4].replace("\"", '').strip()
 
     def __repr__(self):
-        return "-TITLE:" + self.title + "\n" + "-TEXT:" + self.text + "\n\n"
+		return self.to_string()
 
-    def to_list(self):
-        return [int(self.ID), self.feed, self.time, self.title, self.text]
+	def to_list(self):
+		return [int(self.ID), self.feed, self.time, self.title, self.text]
+
+	def to_string(self):
+		return u'\t'.join(self.to_list())
 
     @staticmethod
-    def load_list(filePath):
-        with open(filePath, "r") as csv_file:
-            listOfNotes = [PressNote(unicode(line, 'utf-8').split('\t')) for line in csv_file]
-            return listOfNotes[1:]	#remove file header
+    def from_string(note_string):
+        return PressNote(note_string.split(u'\t'))
+
+    @staticmethod
+	def load_list(filePath):
+		with codecs.open(filePath, "r", "utf-8") as csv_file:
+			listOfNotes = [PressNote(line.split('\t')) for line in csv_file]
+			return listOfNotes[1:]	#remove file header
 
     @staticmethod
     def serialize_list(notes_list, target_file):
@@ -37,4 +45,3 @@ class PressNote:
             csv_writer.writerow(["ID", "feed", "time", "text1", "text2"])
             for note in notes_list:
                 csv_writer.writerow(note.to_list())
-
