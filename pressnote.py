@@ -27,7 +27,7 @@ class PressNote:
     @staticmethod
     def load_list(filePath):
         with open(filePath, "r") as csv_file:
-            listOfNotes = [PressNote(line.split('\t')) for line in csv_file]
+            listOfNotes = [PressNote(unicode(line, 'utf-8').split('\t')) for line in csv_file]
             return listOfNotes[1:]	#remove file header
 
     @staticmethod

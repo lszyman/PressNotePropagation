@@ -41,9 +41,12 @@ def translate(input_string, token, lang_in = 'es', lang_out = 'en'):
         translation = ElementTree.fromstring(translationData.text.encode('utf-8')) # parse xml return values
         return translation.text
     except OSError:
-        print "Error while translating"
-
-
+        print u"Error while translating"
+        return ""
+    except Exception as inst:
+        print u"Unexpected error"
+        print inst
+        return ""
 
 def find_dirs_without_translation(input_dir):
     data_without_translation = []
@@ -58,8 +61,8 @@ def find_dirs_without_translation(input_dir):
 def translate_notes_list(notes_list, lang_in = "es", lang_out = "en"):
     token = get_token()
     for note in notes_list:
-        note.title = translate(note.title, token, lang_in, lang_out)
-        note.text = translate(note.text, token, lang_in, lang_out)
+        note.title = translate(note.title.encode('utf-8'), token, lang_in, lang_out)
+        note.text = translate(note.text.encode('utf-8'), token, lang_in, lang_out)
     return notes_list
 
 def main():

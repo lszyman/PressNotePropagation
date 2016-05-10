@@ -14,7 +14,8 @@ class TestTranslator(unittest.TestCase):
 
     def test_simple_translation(self):
         token = get_token()
-        self.assertEquals(u'Dzi\u0119kuj\u0119', translate("thank you", token, 'en', 'pl'))
+        self.assertEquals(u'Dzi\u0119kuj\u0119', translate(u"thank you", token, 'en', 'pl'))
+        self.assertEquals(u'The Nepal asked foreign relief teams not coming', translate(u"Le Népal demande aux équipes de secours étrangères de ne pas venir".encode('utf-8'), token, 'fr', 'en'))
 
     def test_find_dirs_without_translation(self):
         print find_dirs_without_translation('geomedia')
