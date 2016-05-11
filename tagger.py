@@ -25,7 +25,7 @@ def findTags(file_path, pressnotes, cluster_number, language_code):
 		for item in sorted_extras:
 			tags.append(item[0])
 			break
-		if len(tags) >= 5:
+		if len(tags) >= 10:
 			break
 	saveNotesToFile(file_path, pressnotes, cluster_number, tags)
 
@@ -37,24 +37,26 @@ def saveNotesToFile(file_path, pressnotes, cluster_number, tags):
 		f.write('\n')
 
 if __name__ == '__main__':
-	LANGUAGE_CODE = 'fr'
-	INPUT_DIR = 'outputs' + os.sep + 'Geomedia_extract_AGENDA' + os.sep + LANGUAGE_CODE
-	OUTPUT_DIR = 'outputs' + os.sep + 'Geomedia_extract_AGENDA' + os.sep + LANGUAGE_CODE + '_tagged'
+	LANGUAGE_CODES = ['en']
 	
 	if len(sys.argv) != 1:
 		print "python converter.py"
 	else:
-		for root, subFolders, files in os.walk(INPUT_DIR):
-			for file in files:
-				file_path = os.path.join(root, file)
-				print file_path
-				with codecs.open(file_path, "r", "utf-8") as f:
-					cluster_number = f.readline()
-					while cluster_number.strip() != '':
-						pressnotes = []
-						line = f.readline()
-						while line.strip() != '':
-							pressnotes.append(PressNote(line.split('\t')))
-							line = f.readline()
-						findTags(os.path.join(OUTPUT_DIR, file), pressnotes, cluster_number, LANGUAGE_CODE)	
+		for LANGUAGE_CODE in LANGUAGE_CODES:
+			INPUT_DIR = 'outputs' + os.sep + 'Geomedia_extract_AGENDA' + os.sep + LANGUAGE_CODE
+			OUTPUT_DIR = 'outputs' + os.sep + 'Geomedia_extract_AGENDA' + os.sep + LANGUAGE_CODE + '_tagged'
+			
+			for root, subFolders, files in os.walk(INPUT_DIR):
+				for file in files:
+					file_path = os.path.join(root, file)
+					print file_path
+					with codecs.open(file_path, "r", "utf-8") as f:
 						cluster_number = f.readline()
+						while cluster_number.strip() != '':
+							pressnotes = []
+							line = f.readline()
+							while line.strip() != '':
+								pressnotes.append(PressNote(line.split('\t')))
+								line = f.readline()
+							findTags(os.path.join(OUTPUT_DIR, file), pressnotes, cluster_number, LANGUAGE_CODE)	
+							cluster_number = f.readline()
