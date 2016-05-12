@@ -10,7 +10,11 @@ def translate_header(token, line, lang):
     tags = line[1].split(':')
     translated_tags = []
     for tag in tags:
-        translated_tags.append(translate(tag.encode('utf-8'), token, lang, 'en'))
+		trans_tag = translate(tag.encode('utf-8'), token, lang, 'en')
+		if trans_tag != None:
+			translated_tags.append(trans_tag)
+		else:
+			translated_tags.append(tag)
     return_line = line[0] + " " + ":".join(translated_tags)
     return return_line
 
