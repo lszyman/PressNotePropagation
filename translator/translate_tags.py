@@ -5,28 +5,28 @@ import os
 import codecs
 from translator import *
 
-def translate_header(token, line, lang):
+def translate_header(line, lang):
+    token = get_token()
     line = line.split(' ')
     tags = line[1].split(':')
     translated_tags = []
     for tag in tags:
-		trans_tag = translate(tag.encode('utf-8'), token, lang, 'en')
-		if trans_tag != None:
-			translated_tags.append(trans_tag)
-		else:
-			translated_tags.append(tag)
+        translated_tag = translate(tag.encode('utf-8'), token, lang, 'en')
+        if translated_tag != None:
+            translated_tags.append(translated_tag.replace(" ", "_"))
+        else:
+            translated_tags.append(tag)
     return_line = line[0] + " " + ":".join(translated_tags)
     return return_line
 
 def translate_file(lang, input_file, output_file):
-    token = get_token()
     with codecs.open(output_file, "wb", "utf-8") as cluster_file_output:
         with codecs.open(input_file, "r", "utf-8") as cluster_file_input:
             lines = cluster_file_input.readlines()
             tag = True
             for line in lines:
                 if tag:
-                    line = translate_header(token, line, lang)
+                    line = translate_header(line, lang)
                     tag = False
                 if line == '\n':
                     tag = True
