@@ -108,8 +108,6 @@ class BagOfWords:
 		Y = {}
 		for key in self.bag_of_words:
 			X.append(self.bag_of_words[key])
-			# if(len(X) > 1000):	#usun
-				# break
 
 		# pca = PCA(n_components=min(len(X[0]), 5000))
 		# pca.fit(X)
@@ -124,10 +122,8 @@ class BagOfWords:
 		print "Clusters created: " + str(max(len(X)/30, 50))
 		
 		idx = 0
-		for key in self.bag_of_words: # zachowana kolejnosc?!
+		for key in self.bag_of_words:
 			Y[key] = ward.labels_[idx]
-			# if(len(Y) > 1000):	#usun
-				# break
 			idx+=1
 		
 		sorted_clusters = sorted(Y.items(), key=operator.itemgetter(1), reverse=False)

@@ -23,7 +23,7 @@ class PressNote:
         return self.to_string()
 
     def to_list(self):
-        return [int(self.ID), self.feed, self.time, self.title, self.text]
+        return [self.ID, self.feed, self.time, self.title, self.text]
 
     def to_string(self):
         return u'\t'.join(self.to_list())
