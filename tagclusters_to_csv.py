@@ -6,7 +6,11 @@ import sys
 import codecs
 from translator import *
 
+def clear_txt(txt):
+    return txt.replace(',', '').replace(';', '').replace('|', '').replace('\n', '')
+
 def parse_cluster_file(cluster_file_input, notes_csv_file, clusters_csv_file):
+    separator = ','
     tag = True
     current_cluster = 0
     for input_line in cluster_file_input:
@@ -14,16 +18,18 @@ def parse_cluster_file(cluster_file_input, notes_csv_file, clusters_csv_file):
             input_tokens = input_line.split(' ')
             current_cluster = input_tokens[0]
             input_tags = input_tokens[1].split(':')
-            line = input_tokens[0] + '\t' + '\t'.join(input_tags)
+            line = input_tokens[0] + separator + separator.join(input_tags)
             clusters_csv_file.write(line)
             tag = False
         elif input_line == '\n':
             tag = True
         else:
             input_tokens = input_line.split('\t')
-            input_tokens[-1] = input_tokens[-1].replace('\n', '')
+            input_tokens[-1] = clear_txt(input_tokens[-1])
+            input_tokens[-2] = clear_txt(input_tokens[-2])
+            input_tokens = input_tokens + input_tokens[1].split('_')
             input_tokens.append(current_cluster + '\n')
-            line = '\t'.join(input_tokens)
+            line = separator.join(input_tokens)
             notes_csv_file.write(line)
 
 
